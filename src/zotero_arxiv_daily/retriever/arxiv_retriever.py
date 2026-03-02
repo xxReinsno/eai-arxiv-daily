@@ -13,9 +13,10 @@ from loguru import logger
 class ArxivRetriever(BaseRetriever):
     def __init__(self, config):
         super().__init__(config)
-        if self.config.source.arxiv.category is None:
-            print(self.config.source.arxiv.category)
-            raise ValueError("category must be specified for arxiv.")
+        logger.error(f"Category: {self.config.source.arxiv.category} is not specified. Using default category cs.AI,cs.RO,cs.LG,cs.CL.")
+        # if self.config.source.arxiv.category is None:
+        #     logger.error(f"Category: {self.config.source.arxiv.category} is not specified. Using default category cs.AI,cs.RO,cs.LG,cs.CL.")
+        #     raise ValueError("category must be specified for arxiv.")
     def _retrieve_raw_papers(self) -> list[ArxivResult]:
         client = arxiv.Client(num_retries=10,delay_seconds=10)
         query = '+'.join(self.config.source.arxiv.category)
