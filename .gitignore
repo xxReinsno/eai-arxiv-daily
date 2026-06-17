@@ -11,3 +11,5 @@ wheels/
 # Virtual environments
 .venv
 test.ipynb
+*.log
+data.md

@@ -155,8 +155,8 @@ class ArxivPaper:
             if match:
                 conclusion = match.group(0)
         llm = get_llm()
-        prompt = """Given the title, abstract, introduction and the conclusion (if any) of a paper in latex format, generate a one-sentence TLDR summary in __LANG__:
-        
+        prompt = """Given the title, abstract, introduction and the conclusion (if any) of a paper in latex format, generate a TLDR summary in __LANG__. The summary should be 3-5 sentences (about 80-150 words), and focus mainly on the proposed method: what the key idea/approach is, how it works technically, and what makes it novel. Briefly mention the problem and main result, but keep the emphasis on the method.
+
         \\title{__TITLE__}
         \\begin{abstract}__ABSTRACT__\\end{abstract}
         __INTRODUCTION__
