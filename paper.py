@@ -37,7 +37,22 @@ class ArxivPaper:
     @property
     def pdf_url(self) -> str:
         return self._paper.pdf_url
-    
+
+    @cached_property
+    def html_url(self) -> Optional[str]:
+        # arXiv serves an HTML rendering at /html/<id> for many recent papers
+        # (HTTP 200), and returns 404 when no HTML version exists. Keep this check
+        # fast and best-effort: a single HEAD with a short timeout and no retries,
+        # so a slow/unreachable arxiv.org never stalls the whole email rendering.
+        url = f"https://arxiv.org/html/{self.arxiv_id}"
+        try:
+            resp = requests.head(url, allow_redirects=False, timeout=5)
+            if resp.status_code == 200:
+                return url
+        except Exception as e:
+            logger.debug(f'Error when checking HTML version of {self.arxiv_id}: {e}')
+        return None
+
     @cached_property
     def code_url(self) -> Optional[str]:
         s = requests.Session()
