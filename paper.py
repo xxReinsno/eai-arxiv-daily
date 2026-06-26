@@ -177,7 +177,10 @@ class ArxivPaper:
             if match:
                 conclusion = match.group(0)
         llm = get_llm()
-        prompt = """Given the title, abstract, introduction and the conclusion (if any) of a paper in latex format, generate a TLDR summary in __LANG__. The summary should be 3-5 sentences (about 80-150 words), and focus mainly on the proposed method: what the key idea/approach is, how it works technically, and what makes it novel. Briefly mention the problem and main result, but keep the emphasis on the method.
+        prompt = """以下是一篇论文的标题、摘要、引言和结论（latex 格式）。请你用【中文写一段 TLDR 总结，要求：
+        1. 主体使用简体中文，但是专有名词、模型名、方法名可保留英文。
+        2. 长度 3-5 句话（约 80-150 字）。
+        3. 重点放在论文提出的方法上：核心思路是什么、技术上如何实现、有什么新意。简要提及要解决的问题和主要结果，但以方法为主。
 
         \\title{__TITLE__}
         \\begin{abstract}__ABSTRACT__\\end{abstract}
@@ -200,7 +203,7 @@ class ArxivPaper:
             messages=[
                 {
                     "role": "system",
-                    "content": "You are an assistant who perfectly summarizes scientific paper, and gives the core idea of the paper to the user.",
+                    "content": "你是一个擅长总结科研论文的助手，能用简洁准确的简体中文向用户讲清楚论文的核心思想。无论输入是什么语言，你都必须用简体中文回答。",
                 },
                 {"role": "user", "content": prompt},
             ]
